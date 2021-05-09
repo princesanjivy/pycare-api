@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import scrape_data as data
+from data import scrape_data as data
 from typing import Optional
 
 app = FastAPI(title="PyCare", description="API for pycare", version="1.0.0")
