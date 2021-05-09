@@ -26,7 +26,7 @@ def bedAvailability():
             td = tr.find_all("td")
 
             values.append(td[0].text.strip())
-            for e in range(2, (len(td)//2)+1):
+            for e in range(2, len(td), 2):
                 values.append(
                     {"alloted": td[e].text.strip(),
                      "vacant": td[e+1].text.strip()})
@@ -35,5 +35,6 @@ def bedAvailability():
             availability.append(dataModel)
 
     # return availability
+
 
 bedAvailability()
