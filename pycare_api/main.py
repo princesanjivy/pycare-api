@@ -54,7 +54,17 @@ app = FastAPI(title="PyCare", description="API for pycare", version="1.0.0")
 
 
 # example for status
+# make one for hospitalDetails
 
 @app.get("/status")
 def status():
     return db.getData("status")[0]
+
+
+@app.get("/updateData")
+def updateData(updateOnly: Optional[str] = None):
+    # when query param is not passed in request header scrap and update both the collections
+    # else update only the collection which is requested
+
+    # write if part here
+    return {"updation": db.updateData()}

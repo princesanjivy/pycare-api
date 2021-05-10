@@ -34,7 +34,4 @@ def bedAvailability():
             dataModel = BedAvailabilityModel.parse_obj(dict(zip(keys, values)))
             availability.append(dataModel)
 
-    # return availability
-
-
-bedAvailability()
+    return availability
