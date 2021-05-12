@@ -48,13 +48,20 @@ def status():
     soup = BeautifulSoup(response.text, "lxml")
     for body in soup.find_all("div",  class_ = "card-body"):
         if "Total Reported" in body.text:
-            output.append(extract_numb(body.text))
+            for i in body.text.split('\n'):
+                if "Total Reported" in i:
+                    output.append(extract_numb(i))
         if "Cured" in body.text:
-            output.append(extract_numb(body.text))
+            for i in body.text.split('\n'):
+                if "Cured" in i:
+                    output.append(extract_numb(i))
         if "Active" in body.text:
-            output.append(extract_numb(body.text))
+            for i in body.text.split('\n'):
+                if "Active" in i:
+                    output.append(extract_numb(i))
         if "Death" in body.text:
-            output.append(extract_numb(body.text))
+            for i in body.text.split('\n'):
+                if "Death" in i:
+                    output.append(extract_numb(i))
     report.append(dict(zip(keys, output)))
     return report
-
