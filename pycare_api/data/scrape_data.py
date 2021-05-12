@@ -5,16 +5,17 @@ from datetime import datetime
 import re
 
 url = "https://covid19dashboard.py.gov.in/"
-availability = []
 
-class BedAvailabilityModel(BaseModel):
+class HospitalDetailsModel(BaseModel):
     hospitalName: str
     isolationBeds: dict
     oxygenBeds: dict
     ventilatorBeds: dict
     lastUpdateOn: str
 
-def bedAvailability():
+def hospitalDetails():
+    availability = []
+
     keys = ["hospitalName", "lastUpdateOn", "isolationBeds", "oxygenBeds", "ventilatorBeds"]
     response = requests.get(url + "/BedAvailabilityDetails")
     soup = BeautifulSoup(response.text, "lxml")
@@ -29,11 +30,10 @@ def bedAvailability():
                     values.append(
                         {"alloted": td[e].text.strip(),
                         "vacant": td[e+1].text.strip()})
-                dataModel = BedAvailabilityModel.parse_obj(dict(zip(keys, values)))
+                dataModel = HospitalDetailsModel.parse_obj(dict(zip(keys, values)))
                 availability.append(dataModel)
 
-
-bedAvailability()
+    return availability
 
 def extract_numb(text):
     reg="(\d*)"
@@ -42,6 +42,7 @@ def extract_numb(text):
 
 def status():
     report = []
+
     keys = ["total", "cured", "active", "death"]
     output=[]
     response = requests.get(url + "/Home")
@@ -64,4 +65,5 @@ def status():
                 if "Death" in i:
                     output.append(extract_numb(i))
     report.append(dict(zip(keys, output)))
+    
     return report

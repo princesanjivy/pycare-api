@@ -1,12 +1,12 @@
 import fastapi
-import query_data as data
+from data import query_data as data
 from typing import Optional
 import json
 from pymongo import MongoClient
 
 app = fastapi.FastAPI(title="PyCare", description="API for pycare", version="1.0.0")
 
-@app.get("/bedAvailability",
+@app.get("/hospitalDetails",
          responses={
              200: {
                  "description": '''Lists the number of availabilities of beds.\n
@@ -33,8 +33,7 @@ app = fastapi.FastAPI(title="PyCare", description="API for pycare", version="1.0
                  }
              }
          })
-
-def bedAvailability(bedType: Optional[str] = None):
+def hospitalDetails(bedType: Optional[str] = None):
     availability=list(data.getData('hospitalDetails'))
     if bedType == None:
         return availability
@@ -57,7 +56,6 @@ def bedAvailability(bedType: Optional[str] = None):
                  }
              }
          })
-
 def status():
     report=list(data.getData('status'))
     return report

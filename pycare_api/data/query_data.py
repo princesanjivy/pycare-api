@@ -1,16 +1,13 @@
 import pymongo
 import os
 from typing import Optional
-import scrape_data as data
-
+from data import scrape_data as data
 import json
 from pymongo import MongoClient
 
-
-url = "mongodb+srv://backend:sYPjEGvJzwPqFub3@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
-
+url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
 client = pymongo.MongoClient(url.format(
-    os.getenv("backend1"), os.getenv("sYPjEGvJzwPqFub3")))
+    os.getenv("username"), os.getenv("password")))
 
 db = client["covid19Report"]
 
@@ -28,24 +25,27 @@ def getData(collectionName: str, fields: Optional[list] = None):
 def updatehospitaldetailsData():
     collection = db["hospitalDetails"]
     try:
-        for i in data.availability:
+        for i in data.hospitalDetails():
             collection.update_many({"hospitalName": i.hospitalName},
-                                {"$set": {"isolationBeds.alloted": i.isolationBeds['alloted'],
-                                            "isolationBeds.vacant": i.isolationBeds['vacant'],
-                                            "oxygenBeds.alloted": i.oxygenBeds['alloted'],
-                                            "oxygenBeds.vacant": i.oxygenBeds['vacant'],
-                                            "ventilatorBeds.alloted": i.ventilatorBeds['alloted'],
-                                            "ventilatorBeds.vacant": i.ventilatorBeds['vacant']}})
+                                   {"$set": {"isolationBeds.alloted": i.isolationBeds['alloted'],
+                                             "isolationBeds.vacant": i.isolationBeds['vacant'],
+                                             "oxygenBeds.alloted": i.oxygenBeds['alloted'],
+                                             "oxygenBeds.vacant": i.oxygenBeds['vacant'],
+                                             "ventilatorBeds.alloted": i.ventilatorBeds['alloted'],
+                                             "ventilatorBeds.vacant": i.ventilatorBeds['vacant']}})
 
         return "successfully updated"
     except:
         return "failed to update data"
 
+
 def updatestatusData():
     collection = db["status"]
-    a=data.status()[0]
+    a = data.status()[0]
     try:
-        collection.update_one({},{"$set":{"total":a["total"],"cured":a["cured"],"active":a["active"],"death":a["death"]}})
+        collection.update_one({}, {"$set": {
+                              "total": a["total"], "cured": a["cured"], "active": a["active"], "death": a["death"]}})
+
         return "successfully updated"
     except:
         return "failed to update data"
