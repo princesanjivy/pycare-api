@@ -1,12 +1,12 @@
 import fastapi
 from data import query_data as data
 from typing import Optional
-import json
+from collections import OrderedDict
+from operator import getitem
 from pymongo import MongoClient
 
 app = fastapi.FastAPI(
     title="PyCare", description="API for pycare", version="1.0.0")
-
 
 @app.get("/hospitalDetails",
          responses={
@@ -35,15 +35,18 @@ app = fastapi.FastAPI(
                  }
              }
          })
-def hospitalDetails(bedType: Optional[str] = None):
-    availability = list(data.getData('hospitalDetails'))
-    if bedType == None:
-        return availability
+
+def hospitalDetails(bedType: Optional[str] = None, fields: Optional[str] = None):
+    if fields == None:
+        availability = list(data.getData('hospitalDetails'))
     else:
-        return [{"hospitalName": i.hospitalName, bedType: getattr(i, bedType)} for i in availability]
-
-# endpoint for status
-
+        availability = list(data.getData("hospitalDetails", fields=fields.split(',')))
+    return availability
+    
+    # if bedType==None:
+    #     return availability
+    # else:
+    #     return [{"hospitalName": i.hospitalName, bedType: getattr(i, bedType)} for i in availability]
 
 @app.get("/status",
          responses={
@@ -61,10 +64,10 @@ def hospitalDetails(bedType: Optional[str] = None):
                  }
              }
          })
+
 def status(fields: Optional[str] = None):
     if fields == None:
         report = list(data.getData('status'))   # to get status
     else:
         report = list(data.getData("status", fields=fields.split(',')))     # to get specific status
-
     return report
