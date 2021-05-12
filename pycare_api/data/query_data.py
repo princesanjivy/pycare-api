@@ -24,11 +24,9 @@ def getData(collectionName: str, fields: Optional[list] = None):
         print("all")
         return db.get_collection(collectionName).find({}, {"_id": False})
 
-# a=getData('status',['total','cured'])
-# for i in a: print(i)
 
 def updatehospitaldetailsData():
-    collection = db["bedAvailability"]
+    collection = db["hospitalDetails"]
     try:
         for i in data.availability:
             collection.update_many({"hospitalName": i.hospitalName},
@@ -51,5 +49,3 @@ def updatestatusData():
         return "successfully updated"
     except:
         return "failed to update data"
-
-

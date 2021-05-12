@@ -35,7 +35,7 @@ app = fastapi.FastAPI(title="PyCare", description="API for pycare", version="1.0
          })
 
 def bedAvailability(bedType: Optional[str] = None):
-    availability=list(data.getData('bedAvailability',["hospitalName", "lastUpdateOn", "isolationBeds", "oxygenBeds", "ventilatorBeds"]))
+    availability=list(data.getData('hospitalDetails'))
     if bedType == None:
         return availability
     else:
@@ -59,5 +59,5 @@ def bedAvailability(bedType: Optional[str] = None):
          })
 
 def status():
-    report=list(data.getData('status',["total", "cured", "active", "death"]))
+    report=list(data.getData('status'))
     return report
