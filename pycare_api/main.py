@@ -4,7 +4,9 @@ from typing import Optional
 import json
 from pymongo import MongoClient
 
-app = fastapi.FastAPI(title="PyCare", description="API for pycare", version="1.0.0")
+app = fastapi.FastAPI(
+    title="PyCare", description="API for pycare", version="1.0.0")
+
 
 @app.get("/hospitalDetails",
          responses={
@@ -15,7 +17,7 @@ app = fastapi.FastAPI(title="PyCare", description="API for pycare", version="1.0
                      "application/json": {
                          "example": [{
                              "hospitalName": "PIMS",
-                             "lastUpdateOn":"09-05-2021 08:52:50",
+                             "lastUpdateOn": "09-05-2021 08:52:50",
                              "isolationBeds": {
                                  "alloted": "80",
                                  "vacant": "3"
@@ -34,11 +36,14 @@ app = fastapi.FastAPI(title="PyCare", description="API for pycare", version="1.0
              }
          })
 def hospitalDetails(bedType: Optional[str] = None):
-    availability=list(data.getData('hospitalDetails'))
+    availability = list(data.getData('hospitalDetails'))
     if bedType == None:
         return availability
     else:
         return [{"hospitalName": i.hospitalName, bedType: getattr(i, bedType)} for i in availability]
+
+# endpoint for status
+
 
 @app.get("/status",
          responses={
@@ -48,14 +53,18 @@ def hospitalDetails(bedType: Optional[str] = None):
                      "application/json": {
                          "example": [{
                              "total": "70076",
-                             "cured":"55552",
-                              "active":"13585",
-                               "death":"939"
-                             }]
+                             "cured": "55552",
+                             "active": "13585",
+                             "death": "939"
+                         }]
                      }
                  }
              }
          })
-def status():
-    report=list(data.getData('status'))
+def status(fields: Optional[str] = None):
+    if fields == None:
+        report = list(data.getData('status'))   # to get status
+    else:
+        report = list(data.getData("status", fields=fields.split(',')))     # to get specific status
+
     return report

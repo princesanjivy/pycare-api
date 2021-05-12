@@ -18,7 +18,6 @@ def getData(collectionName: str, fields: Optional[list] = None):
         showOnly["_id"] = False
         return db.get_collection(collectionName).find({}, showOnly)
     else:
-        print("all")
         return db.get_collection(collectionName).find({}, {"_id": False})
 
 
