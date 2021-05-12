@@ -2,31 +2,32 @@ import pymongo
 import os
 from typing import Optional
 import scrape_data as data
-import home_data as dashboard
+
 import json
 from pymongo import MongoClient
 
-url = 'mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority'
+
+url = "mongodb+srv://backend:sYPjEGvJzwPqFub3@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
 
 client = pymongo.MongoClient(url.format(
-    os.getenv("username"), os.getenv("password")))
+    os.getenv("backend1"), os.getenv("sYPjEGvJzwPqFub3")))
 
 db = client["covid19Report"]
 
 
-def getData(collectionName: str,
-            fields: Optional[list] = None):
+def getData(collectionName: str, fields: Optional[list] = None):
     if fields != None:
         showOnly = dict(zip(fields, [True]*len(fields)))
         showOnly["_id"] = False
         return db.get_collection(collectionName).find({}, showOnly)
     else:
         print("all")
-
         return db.get_collection(collectionName).find({}, {"_id": False})
 
+# a=getData('status',['total','cured'])
+# for i in a: print(i)
 
-def updateData():
+def updatehospitaldetailsData():
     collection = db["bedAvailability"]
     try:
         for i in data.availability:
@@ -43,9 +44,12 @@ def updateData():
         return "failed to update data"
 
 def updatestatusData():
+    collection = db["status"]
+    a=data.status()[0]
     try:
-        
-        Collection.update_one({},{"$set":{"total":a["total"],"cured":a["cured"],"active":a["active"],"death":a["death"]}})
+        collection.update_one({},{"$set":{"total":a["total"],"cured":a["cured"],"active":a["active"],"death":a["death"]}})
         return "successfully updated"
     except:
         return "failed to update data"
+
+
