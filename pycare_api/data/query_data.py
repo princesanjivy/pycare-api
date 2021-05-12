@@ -22,7 +22,7 @@ def getData(collectionName: str, fields: Optional[list] = None):
         return db.get_collection(collectionName).find({}, {"_id": False})
 
 
-def updatehospitaldetailsData():
+def updateHospitalDetailsData():
     collection = db["hospitalDetails"]
     try:
         for i in data.hospitalDetails():
@@ -39,7 +39,7 @@ def updatehospitaldetailsData():
         return "failed to update data"
 
 
-def updatestatusData():
+def updateStatusData():
     collection = db["status"]
     a = data.status()[0]
     try:
