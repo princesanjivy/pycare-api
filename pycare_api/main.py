@@ -36,7 +36,7 @@ app = fastapi.FastAPI(
              }
          })
 
-def hospitalDetails(bedType: Optional[str] = None, fields: Optional[str] = None):
+def hospitalDetails( fields: Optional[str] = None):
     if fields == None:
         availability = list(data.getData('hospitalDetails'))
     else:
