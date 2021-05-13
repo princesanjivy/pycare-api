@@ -1,73 +1,31 @@
-import fastapi
+from fastapi import FastAPI
 from data import query_data as data
 from typing import Optional
-from collections import OrderedDict
-from operator import getitem
-from pymongo import MongoClient
 
-app = fastapi.FastAPI(
+app = FastAPI(
     title="PyCare", description="API for pycare", version="1.0.0")
 
-@app.get("/hospitalDetails",
-         responses={
-             200: {
-                 "description": '''Lists the number of availabilities of beds.\n
-                 Has optional query param "bedType" to get specific type of bed availability''',
-                 "content": {
-                     "application/json": {
-                         "example": [{
-                             "hospitalName": "PIMS",
-                             "lastUpdateOn": "09-05-2021 08:52:50",
-                             "isolationBeds": {
-                                 "alloted": "80",
-                                 "vacant": "3"
-                             },
-                             "oxygenBeds": {
-                                 "alloted": "5",
-                                 "vacant": "100"
-                             },
-                             "ventilatorBeds": {
-                                 "alloted": "100",
-                                 "vacant": "0"
-                             }
-                         }]
-                     }
-                 }
-             }
-         })
 
-def hospitalDetails( fields: Optional[str] = None):
-    if fields == None:
+@app.get("/hospitalDetails")
+def hospitalDetails(fields: Optional[str] = None, sort: Optional[str] = None):
+    if fields == None and sort == None:
         availability = list(data.getData('hospitalDetails'))
+    elif fields != None and sort == None:
+        availability = list(data.getData(
+            "hospitalDetails", fields=fields.split(',')))
+    elif sort != None and fields == None:
+        availability = list(data.getData("hospitalDetails").sort(sort,-1))
     else:
-        availability = list(data.getData("hospitalDetails", fields=fields.split(',')))
+        availability = list(data.getData("hospitalDetails", fields=fields.split(',')).sort(sort,-1))
+
     return availability
-    
-    # if bedType==None:
-    #     return availability
-    # else:
-    #     return [{"hospitalName": i.hospitalName, bedType: getattr(i, bedType)} for i in availability]
 
-@app.get("/status",
-         responses={
-             200: {
-                 "description": "Covid status in Pondicherry",
-                 "content": {
-                     "application/json": {
-                         "example": [{
-                             "total": "70076",
-                             "cured": "55552",
-                             "active": "13585",
-                             "death": "939"
-                         }]
-                     }
-                 }
-             }
-         })
 
+@app.get("/status")
 def status(fields: Optional[str] = None):
     if fields == None:
         report = list(data.getData('status'))   # to get status
     else:
-        report = list(data.getData("status", fields=fields.split(',')))     # to get specific status
+        # to get specific status
+        report = list(data.getData("status", fields=fields.split(',')))
     return report

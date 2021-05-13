@@ -2,7 +2,6 @@ import pymongo
 import os
 from typing import Optional
 from data import scrape_data as data
-import json
 from pymongo import MongoClient
 
 url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
@@ -17,7 +16,7 @@ def getData(collectionName: str, fields: Optional[list] = None):
         fields.append("hospitalName")
         showOnly = dict(zip(fields, [True]*len(fields)))
         showOnly["_id"] = False
-        return db.get_collection(collectionName).find({}, showOnly).sort(fields[0],-1)
+        return db.get_collection(collectionName).find({}, showOnly)
     else:
         return db.get_collection(collectionName).find({}, {"_id": False})
 
