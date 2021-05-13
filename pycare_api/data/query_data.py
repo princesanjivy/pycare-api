@@ -5,7 +5,7 @@ from data import scrape_data as data
 import json
 from pymongo import MongoClient
 
-url = "mongodb+srv://backend:sYPjEGvJzwPqFub3@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
+url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
 client = pymongo.MongoClient(url.format(
     os.getenv("username"), os.getenv("password")))
 
