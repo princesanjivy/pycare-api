@@ -14,9 +14,10 @@ db = client["covid19Report"]
 
 def getData(collectionName: str, fields: Optional[list] = None):
     if fields != None:
+        fields.append("hospitalName")
         showOnly = dict(zip(fields, [True]*len(fields)))
         showOnly["_id"] = False
-        return db.get_collection(collectionName).find({}, showOnly)
+        return db.get_collection(collectionName).find({}, showOnly).sort(fields[0],-1)
     else:
         return db.get_collection(collectionName).find({}, {"_id": False})
 
