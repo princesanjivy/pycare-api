@@ -1,7 +1,7 @@
 import pymongo
 import os
 from typing import Optional
-from data import scrape_data as data
+from pycare_api.data import scrape_data as data
 from pymongo import MongoClient
 
 url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
