@@ -9,7 +9,6 @@ client = pymongo.MongoClient(url.format(
     os.getenv("username"), os.getenv("password")))
 db = client["covid19Report"]
 
-
 def getData(collectionName: str, fields: Optional[list] = None):
     if fields != None:
         fields.append("hospitalName")
@@ -30,9 +29,9 @@ def updateHospitalDetailsData():
                                              "oxygenBeds.vacant": i.oxygenBeds['vacant'],
                                              "ventilatorBeds.alloted": i.ventilatorBeds['alloted'],
                                              "ventilatorBeds.vacant": i.ventilatorBeds['vacant']}})
-        return "successfully updated hospitalDetails"
+        return "successfully updated hospitalDetails collection"
     except Exception as err:
-        return str(err)+"failed to update data hospitalDetails"
+        return str(err)+"failed to update data hospitalDetails collection"
 
 def updateStatusData():
     collection = db["status"]
@@ -40,9 +39,9 @@ def updateStatusData():
     try:
         collection.update_one({}, {"$set": {
                               "total": a["total"], "cured": a["cured"], "active": a["active"], "death": a["death"]}})
-        return "successfully updated status"
-    except:
-        return "failed to update data status"
+        return "successfully updated status collection"
+    except Exception as err:
+        return str(err)+"failed to update data status collection"
 
 
 
