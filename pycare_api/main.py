@@ -35,16 +35,6 @@ def status(fields: Optional[str] = None):
         report = list(qdata.getData("status", fields=fields.split(',')))
     return report
 
-@app.get("/updateData")
-def updateData(updateOnly: Optional[str] = None):
-    if updateOnly == None:
-        return updateHospitalDetailsData(), updateStatusData()
-    else:
-        if updateOnly=="status":
-            return updateStatusData()
-        elif updateOnly=="hospitalDetails":
-            return updateHospitalDetailsData() 
-
 def updateHospitalDetailsData():
     collection = db["hospitalDetails"]
     try:
@@ -70,3 +60,14 @@ def updateStatusData():
         return "successfully updated status"
     except:
         return "failed to update data status"
+
+@app.get("/updateData")
+def updateData(updateOnly: Optional[str] = None):
+    if updateOnly == None:
+        return "yes", updateHospitalDetailsData(), updateStatusData()
+    else:
+        if updateOnly=="status":
+            return updateStatusData()
+        elif updateOnly=="hospitalDetails":
+            return updateHospitalDetailsData() 
+
