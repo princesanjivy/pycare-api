@@ -5,3 +5,4 @@ beautifulsoup4==4.9.3
 fastapi==0.65.1
 uvicorn==0.13.4
 jinja2==2.11.3
+dnspython==1.16.0
