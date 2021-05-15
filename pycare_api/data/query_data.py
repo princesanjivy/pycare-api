@@ -31,9 +31,8 @@ def updateHospitalDetailsData():
                                              "ventilatorBeds.alloted": i.ventilatorBeds['alloted'],
                                              "ventilatorBeds.vacant": i.ventilatorBeds['vacant']}})
         return "successfully updated hospitalDetails"
-    except:
-        return "failed to update data hospitalDetails"
-
+    except Exception as err:
+        return str(err)+"failed to update data hospitalDetails"
 
 def updateStatusData():
     collection = db["status"]
