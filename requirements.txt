@@ -7,3 +7,4 @@ uvicorn==0.13.4
 jinja2==2.11.3
 dnspython==1.16.0
 regex==2020.11.13
+lxml==4.6.2
