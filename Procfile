@@ -1,0 +1,1 @@
+web: uvicorn pycare_api.main:app
