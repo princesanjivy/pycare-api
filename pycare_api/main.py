@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from data import query_data as qdata
-from data import scrape_data as sdata
+from pycare_api.data import query_data as qdata
+from pycare_api.data import scrape_data as sdata
 from typing import Optional
 import os
 import pymongo
