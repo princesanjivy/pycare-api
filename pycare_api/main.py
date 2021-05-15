@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from pycare_api.data import query_data as qdata
-from pycare_api.data import scrape_data as sdata
 from typing import Optional
 import os
 import pymongo
@@ -35,39 +34,14 @@ def status(fields: Optional[str] = None):
         report = list(qdata.getData("status", fields=fields.split(',')))
     return report
 
-def updateHospitalDetailsData():
-    collection = db["hospitalDetails"]
-    try:
-        for i in sdata.hospitalDetails():
-            collection.update_many({"hospitalName": i.hospitalName},
-                                   {"$set": {"isolationBeds.alloted": i.isolationBeds['alloted'],
-                                             "isolationBeds.vacant": i.isolationBeds['vacant'],
-                                             "oxygenBeds.alloted": i.oxygenBeds['alloted'],
-                                             "oxygenBeds.vacant": i.oxygenBeds['vacant'],
-                                             "ventilatorBeds.alloted": i.ventilatorBeds['alloted'],
-                                             "ventilatorBeds.vacant": i.ventilatorBeds['vacant']}})
-        return "successfully updated hospitalDetails"
-    except:
-        return "failed to update data hospitalDetails"
-
-
-def updateStatusData():
-    collection = db["status"]
-    a = sdata.status()[0]
-    try:
-        collection.update_one({}, {"$set": {
-                              "total": a["total"], "cured": a["cured"], "active": a["active"], "death": a["death"]}})
-        return "successfully updated status"
-    except:
-        return "failed to update data status"
 
 @app.get("/updateData")
 def updateData(updateOnly: Optional[str] = None):
     if updateOnly == None:
-        return "yes", updateHospitalDetailsData(), updateStatusData()
+        return "yes", qdata.updateHospitalDetailsData(), qdata.updateStatusData()
     else:
         if updateOnly=="status":
-            return updateStatusData()
+            return qdata.updateStatusData()
         elif updateOnly=="hospitalDetails":
-            return updateHospitalDetailsData() 
+            return qdata.updateHospitalDetailsData() 
 

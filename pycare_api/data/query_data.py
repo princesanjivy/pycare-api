@@ -1,5 +1,6 @@
 import pymongo
 import os
+from pycare_api.data import scrape_data as sdata
 from typing import Optional
 from pymongo import MongoClient
 
@@ -17,6 +18,32 @@ def getData(collectionName: str, fields: Optional[list] = None):
         return db.get_collection(collectionName).find({}, showOnly)
     else:
         return db.get_collection(collectionName).find({}, {"_id": False})
+
+def updateHospitalDetailsData():
+    collection = db["hospitalDetails"]
+    try:
+        for i in sdata.hospitalDetails():
+            collection.update_many({"hospitalName": i.hospitalName},
+                                   {"$set": {"isolationBeds.alloted": i.isolationBeds['alloted'],
+                                             "isolationBeds.vacant": i.isolationBeds['vacant'],
+                                             "oxygenBeds.alloted": i.oxygenBeds['alloted'],
+                                             "oxygenBeds.vacant": i.oxygenBeds['vacant'],
+                                             "ventilatorBeds.alloted": i.ventilatorBeds['alloted'],
+                                             "ventilatorBeds.vacant": i.ventilatorBeds['vacant']}})
+        return "successfully updated hospitalDetails"
+    except:
+        return "failed to update data hospitalDetails"
+
+
+def updateStatusData():
+    collection = db["status"]
+    a = sdata.status()[0]
+    try:
+        collection.update_one({}, {"$set": {
+                              "total": a["total"], "cured": a["cured"], "active": a["active"], "death": a["death"]}})
+        return "successfully updated status"
+    except:
+        return "failed to update data status"
 
 
 
