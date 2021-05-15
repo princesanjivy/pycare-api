@@ -4,7 +4,9 @@ from pycare_api.data import scrape_data as sdata
 from typing import Optional
 from pymongo import MongoClient
 
-url = "mongodb+srv://backend:sYPjEGvJzwPqFub3@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
+db_username=os.environ.get('db_username')
+db_pass=os.environ.get('db_pass')
+url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority".format(db_username,db_pass)
 client = pymongo.MongoClient(url.format(
     os.getenv("username"), os.getenv("password")))
 db = client["covid19Report"]
