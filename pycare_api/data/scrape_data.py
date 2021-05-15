@@ -6,7 +6,6 @@ import re
 
 url = "https://covid19dashboard.py.gov.in/"
 
-
 class HospitalDetailsModel(BaseModel):
     hospitalName: str
     isolationBeds: dict
@@ -14,10 +13,8 @@ class HospitalDetailsModel(BaseModel):
     ventilatorBeds: dict
     lastUpdateOn: str
 
-
 def hospitalDetails():
     availability = []
-
     keys = ["hospitalName", "lastUpdateOn",
             "isolationBeds", "oxygenBeds", "ventilatorBeds"]
     response = requests.get(url + "/BedAvailabilityDetails")
@@ -36,19 +33,15 @@ def hospitalDetails():
                 dataModel = HospitalDetailsModel.parse_obj(
                     dict(zip(keys, values)))
                 availability.append(dataModel)
-
     return availability
-
 
 def extract_numb(text):
     reg = "(\d*)"
     match = re.match(reg, text)
     return match.group()
 
-
 def status():
     report = []
-
     keys = ["total", "cured", "active", "death"]
     output = []
     response = requests.get(url + "/Home")
@@ -71,5 +64,4 @@ def status():
                 if "Death" in i:
                     output.append(extract_numb(i))
     report.append(dict(zip(keys, output)))
-
     return report
