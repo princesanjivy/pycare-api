@@ -39,4 +39,4 @@ def updateData(updateOnly: Optional[str] = None):
 
 @app.get("/translation")
 def translation():
-    return list(qdata.getData("translation"))
+    return qdata.getTranslation()

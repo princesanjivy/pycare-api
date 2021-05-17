@@ -9,6 +9,7 @@ client = pymongo.MongoClient(url.format(
     os.getenv("username"), os.getenv("password")))
 db = client["covid19Report"]
 
+
 def getData(collectionName: str, fields: Optional[list] = None):
     if fields != None:
         showOnly = dict(zip(fields, [True]*len(fields)))
@@ -16,6 +17,7 @@ def getData(collectionName: str, fields: Optional[list] = None):
         return db.get_collection(collectionName).find({}, showOnly)
     else:
         return db.get_collection(collectionName).find({}, {"_id": False})
+
 
 def updateHospitalDetailsData():
     collection = db["hospitalDetails"]
@@ -32,6 +34,7 @@ def updateHospitalDetailsData():
     except Exception as err:
         return str(err)+"failed to update data hospitalDetails collection"
 
+
 def updateStatusData():
     collection = db["status"]
     a = sdata.status()[0]
@@ -42,3 +45,10 @@ def updateStatusData():
     except Exception as err:
         return str(err)+"failed to update data status collection"
 
+
+def getTranslation():
+    cursor = db.get_collection("translation").find({}, {"_id": False})
+    cursor = list(cursor)
+    data = {key: c[key] for c in cursor for key in c.keys()}
+
+    return data
