@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from pycare_api.data import query_data as qdata
 from typing import Optional
-import os
-import pymongo
 
 app = FastAPI(
     title="PyCare", description="API for pycare", version="1.0.0")
@@ -38,3 +36,7 @@ def updateData(updateOnly: Optional[str] = None):
         elif updateOnly=="hospitalDetails":
             return qdata.updateHospitalDetailsData() 
 
+
+@app.get("/translation")
+def translation():
+    return list(qdata.getData("translation"))

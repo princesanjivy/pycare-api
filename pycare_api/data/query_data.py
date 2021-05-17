@@ -4,16 +4,13 @@ from pycare_api.data import scrape_data as sdata
 from typing import Optional
 from pymongo import MongoClient
 
-db_username=os.environ.get('db_username')
-db_pass=os.environ.get('db_pass')
-url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority".format(db_username,db_pass)
+url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
 client = pymongo.MongoClient(url.format(
     os.getenv("username"), os.getenv("password")))
 db = client["covid19Report"]
 
 def getData(collectionName: str, fields: Optional[list] = None):
     if fields != None:
-        fields.append("hospitalName")
         showOnly = dict(zip(fields, [True]*len(fields)))
         showOnly["_id"] = False
         return db.get_collection(collectionName).find({}, showOnly)
@@ -44,6 +41,4 @@ def updateStatusData():
         return "successfully updated status collection"
     except Exception as err:
         return str(err)+"failed to update data status collection"
-
-
 
