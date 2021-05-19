@@ -42,7 +42,7 @@ def extract_numb(text):
 
 def status():
     report = []
-    keys = ["total", "cured", "active", "death"]
+    keys = ["total", "cured", "active", "death","lastUpdatedOn"]
     output = []
     response = requests.get(url + "/Home")
     soup = BeautifulSoup(response.text, "lxml")
@@ -63,5 +63,11 @@ def status():
             for i in body.text.split('\n'):
                 if "Death" in i:
                     output.append(extract_numb(i))
+    for body in soup.find_all("footer"):
+        if "Last" in body.text:
+            output.append (body.text.strip().split("\n")[1].strip())
+
     report.append(dict(zip(keys, output)))
+
     return report
+    
