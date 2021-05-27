@@ -1,6 +1,6 @@
 import pymongo
 import os
-import scrape_data as sdata
+import data.scrape_data as sdata
 from typing import Optional
 from pymongo import MongoClient
 

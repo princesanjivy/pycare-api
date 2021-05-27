@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import query_data as qdata
+import data.query_data as qdata
 from typing import Optional
 
 app = FastAPI(
