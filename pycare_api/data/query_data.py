@@ -4,21 +4,26 @@ import scrape_data as sdata
 from typing import Optional
 from pymongo import MongoClient
 
+<<<<<<< HEAD
 db_username=os.environ.get('db_username')
 db_pass=os.environ.get('db_pass')
 url = "mongodb+srv://backend:sYPjEGvJzwPqFub3@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority".format(db_username,db_pass)
+=======
+url = "mongodb+srv://{}:{}@pycare-api.xbmlx.mongodb.net/covid19Report?retryWrites=true&w=majority"
+>>>>>>> ff82f8ada10e96409f3d10676784fc128350a71a
 client = pymongo.MongoClient(url.format(
     os.getenv("username"), os.getenv("password")))
 db = client["covid19Report"]
 
+
 def getData(collectionName: str, fields: Optional[list] = None):
     if fields != None:
-        fields.append("hospitalName")
         showOnly = dict(zip(fields, [True]*len(fields)))
         showOnly["_id"] = False
         return db.get_collection(collectionName).find({}, showOnly)
     else:
         return db.get_collection(collectionName).find({}, {"_id": False})
+
 
 def updateHospitalDetailsData():
     collection = db["hospitalDetails"]
@@ -35,15 +40,29 @@ def updateHospitalDetailsData():
     except Exception as err:
         return str(err)+"failed to update data hospitalDetails collection"
 
+
 def updateStatusData():
     collection = db["status"]
     a = sdata.status()[0]
     try:
         collection.update_one({}, {"$set": {
                               "total": a["total"], "cured": a["cured"], "active": a["active"], "death": a["death"],"lastUpdatedOn":a["lastUpdatedOn"]}})
+<<<<<<< HEAD
         return "successfully updated status collection", a
     except Exception as err:
         return str(err)+"failed to update data status collection"
 
 updateStatusData()
+=======
+        return "successfully updated status collection"
+    except Exception as err:
+        return str(err)+"failed to update data status collection"
 
+
+def getTranslation():
+    cursor = db.get_collection("translation").find({}, {"_id": False})
+    cursor = list(cursor)
+    data = {key: c[key] for c in cursor for key in c.keys()}
+>>>>>>> ff82f8ada10e96409f3d10676784fc128350a71a
+
+    return data

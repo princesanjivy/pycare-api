@@ -71,4 +71,7 @@ def status():
 
     return report
     
+<<<<<<< HEAD
 status()
+=======
+>>>>>>> ff82f8ada10e96409f3d10676784fc128350a71a
