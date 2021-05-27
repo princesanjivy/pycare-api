@@ -47,3 +47,8 @@ def updateStatusData():
     except Exception as err:
         return str(err)+"failed to update data status collection"
 
+def getTranslation():
+    cursor = db.get_collection("translation").find({}, {"_id": False})
+    cursor = list(cursor)
+    data = {key: c[key] for c in cursor for key in c.keys()}
+    return data
