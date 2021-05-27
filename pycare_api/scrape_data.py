@@ -66,9 +66,9 @@ def status():
     for body in soup.find_all("footer"):
         if "Last" in body.text:
             output.append (body.text.strip().split("\n")[1].strip())
-
+    print(output)
     report.append(dict(zip(keys, output)))
-
     return report
     
-status()
+
+

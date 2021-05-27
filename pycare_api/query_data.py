@@ -41,9 +41,9 @@ def updateStatusData():
     try:
         collection.update_one({}, {"$set": {
                               "total": a["total"], "cured": a["cured"], "active": a["active"], "death": a["death"],"lastUpdatedOn":a["lastUpdatedOn"]}})
-        return "successfully updated status collection", a
+        return "successfully updated status collection"
     except Exception as err:
         return str(err)+"failed to update data status collection"
 
-updateStatusData()
 
+updateStatusData()

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from pycare_api.data import query_data as qdata
+import query_data as qdata
 from typing import Optional
 import os
 import pymongo
@@ -38,3 +38,4 @@ def updateData(updateOnly: Optional[str] = None):
         elif updateOnly=="hospitalDetails":
             return qdata.updateHospitalDetailsData() 
 
+status()
