@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import data.query_data as qdata
+from pycare_api.data import query_data as qdata
 from typing import Optional
 
 app = FastAPI(

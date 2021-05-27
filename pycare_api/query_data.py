@@ -1,6 +1,6 @@
 import pymongo
 import os
-import data.scrape_data as sdata
+from pycare_api.data import scrape_data as sdata
 from typing import Optional
 from pymongo import MongoClient
 
