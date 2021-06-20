@@ -29,7 +29,7 @@ def status(fields: Optional[str] = None):
 @app.get("/updateData")
 def updateData(updateOnly: Optional[str] = None):
     if updateOnly == None:
-        return qdata.updateHospitalDetailsData(), qdata.updateStatusData()
+        return qdata.updateHospitalDetailsData(), qdata.updateStatusData(), qdata.updateDistrictWiseReport()
     else:
         if updateOnly=="status":
             return qdata.updateStatusData()
@@ -40,3 +40,11 @@ def updateData(updateOnly: Optional[str] = None):
 @app.get("/translation")
 def translation():
     return qdata.getTranslation()
+
+
+@app.get("/districtWiseReport")
+def districtWiseReport():
+    report = list(qdata.getData('districtWiseReport'))
+
+    return report
+

@@ -52,3 +52,18 @@ def getTranslation():
     data = {key: c[key] for c in cursor for key in c.keys()}
 
     return data
+
+def updateDistrictWiseReport():
+    collection = db["districtWiseReport"]
+    try:
+        for i in sdata.districtWiseReport():
+            collection.update_many({"district": i.district},
+                                   {"$set": {
+                                        "reported": i.reported,
+                                        "active": i.active,
+                                        "cured": i.cured,
+                                        "death": i.death,
+                                   }})
+        return "successfully updated districtWiseReport collection"
+    except Exception as err:
+        return str(err)+"failed to update data districtWiseReport collection"

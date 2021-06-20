@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 from pydantic import BaseModel
-from datetime import datetime
 import re
 
 url = "https://covid19dashboard.py.gov.in/"
@@ -12,6 +11,14 @@ class HospitalDetailsModel(BaseModel):
     oxygenBeds: dict
     ventilatorBeds: dict
     lastUpdateOn: str
+
+class DistrictWiseReport(BaseModel):
+    district: str
+    reported: str
+    cured: str
+    active: str
+    death: str
+
 
 def hospitalDetails():
     availability = []
@@ -71,3 +78,23 @@ def status():
 
     return report
     
+def districtWiseReport():
+    keys = ["district", "reported", "cured", "active", "death"]
+    response = requests.get(url + "/Reporting/District")
+    soup = BeautifulSoup(response.text, "lxml")
+    output = []
+
+    tables = soup.find_all("tbody")
+    tr = tables[1].find_all("tr")
+
+    for trs in tr:
+        d=[]
+        for data in trs.find_all("td"):
+            d.append(data.text.strip())
+        # output.append(dict(zip(keys, d)))
+        dataModel = DistrictWiseReport.parse_obj(
+                    dict(zip(keys, d)))
+        output.append(dataModel)
+
+        
+    return output
