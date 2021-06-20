@@ -36,7 +36,6 @@ def updateData(updateOnly: Optional[str] = None):
         elif updateOnly=="hospitalDetails":
             return qdata.updateHospitalDetailsData() 
 
-
 @app.get("/translation")
 def translation():
     return qdata.getTranslation()
